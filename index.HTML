@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- SPECIAL IOS TAGS: Stops zooming, fits iPhone screen perfectly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <title>Connection Error</title>
+    
+    <style>
+        /* iOS System Font */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7; /* iPhone Light Grey Background */
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full screen height */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* THE FAKE SCREEN (Looks like Safari Error) */
+        #fake-screen {
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+        p { color: #8e8e93; font-size: 15px; margin-bottom: 30px; }
+
+        /* iOS Input Field - Font size 16px prevents auto-zoom */
+        input {
+            font-size: 16px; 
+            padding: 12px;
+            width: 80%;
+            border: 1px solid #c7c7cc;
+            border-radius: 10px;
+            background: #fff;
+            text-align: center;
+            outline: none;
+            -webkit-appearance: none; /* Removes shadow on iPhone */
+        }
+        
+        input::placeholder { color: #c7c7cc; }
+
+        /* THE REAL CHAT AREA */
+        #chat-area {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .chat-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. FAKE SCREEN (What Mom sees) -->
+    <div id="fake-screen">
+        <!-- SVG Icon for "No Wifi" look -->
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+            <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+            <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+            <path d="M1.42 9a16 16 0 0 1 4.7-2.88"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+
+        <h1>Safari cannot open the page</h1>
+        <p>The server stopped responding. <br>Try searching for the error code below.</p>
+        
+        <!-- She types password here -->
+        <input type="password" id="pass" placeholder="Search Code..." onkeyup="checkPass()">
+    </div>
+
+    <!-- 2. REAL CHAT AREA -->
+    <div id="chat-area">
+        <!-- We will put a chat link here -->
+        <iframe src="" id="chat-frame" class="chat-iframe"></iframe>
+    </div>
+
+    <script>
+        // --- SETTINGS ---
+        // 1. Your NTFY Topic Name (from the App)
+        const topicName = "nepal-secret-chat-99"; 
+        
+        // 2. The Password
+        const password = "love"; 
+
+        // 3. YOUR CHAT LINK (Tawk.to, Google Doc, etc)
+        // If you don't have one, leave it blank for now.
+        const chatLink = "https://www.google.com"; 
+
+        // --- NOTIFICATION LOGIC ---
+        // Runs immediately when page loads
+        fetch(`https://ntfy.sh/${topicName}`, {
+            method: 'POST',
+            body: 'iPhone Alert: She is on the website!',
+            headers: { 'Priority': 'high' }
+        })
+        .then(res => console.log("Alert Sent"))
+        .catch(err => console.log("Failed"));
+
+        // --- UNLOCK LOGIC ---
+        function checkPass() {
+            const val = document.getElementById("pass").value;
+            if (val === password) {
+                // Unlock
+                document.getElementById("fake-screen").style.display = "none";
+                document.getElementById("chat-area").style.display = "block";
+                
+                // Load the chat URL
+                document.getElementById("chat-frame").src = chatLink;
+            }
+        }
+    </script>
+const topicName = "nepal-secret-chat-99";
+</body>
+</html>
